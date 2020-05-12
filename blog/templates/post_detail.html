@@ -1,10 +1,13 @@
 {% extends "blog/base.html" %}
 {% block content %}
+{% load crispy_forms_tags %}
+
+
   <article class="media content-section">
     <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#">{{ post.author }}</a>
+        <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
         <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
         {% if post.author == user %}
           <div>
@@ -28,20 +31,73 @@
     
         <!-- comments -->
          
+         
         
         {% for comment in comments %}
+
+        
+
         <article class="media content-section">
-        <div class="media-body">
-            <a class="mr-2" href="#">{{ comment.name }}</a>
+
+          <small class="text-muted">{{ post.author}}</small>
+
+
+    
+          <img class="rounded-circle article-img" src="{{ comment.nameid.profile.image.url }}">
+         
+      
+
+
+          <div class="media-body">
+            
+            <small class="text-muted">{{ comment.id}}</small>
+            <small class="text-muted">{{ comment.name}}</small>
             <small class="text-muted">{{ comment.created_on|date:"F d, Y" }}</small>
         <div class="media-body ">
           <p class="article-content">{{ comment.body  }}</p>
+
+          
         </div>
         </div>
+
+        {% if comment.name == user.username %}
+
+            <a href="{% url 'delete_own_comment' comment.id %}">delete this comment</a>
+
+
         
+        {% endif %}
+
+
+
+
+
+
+
         </article>
+
+      
+
         {% endfor %}
 
+
+
+
+ {% if user.is_authenticated %}
+
+ <form action="" method="post">
+    
+    {% csrf_token %}
+    {{ comment_form|crispy }}
+    <input type="submit" value="Submit">
+</form>
+                
+{% else %}
+
+<article class="media content-section">
+Users who are logged in can post comments. 
+</article>
+{% endif %}
 
 {% endblock content %}
 

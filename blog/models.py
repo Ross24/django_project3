@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.contrib import admin
 
 
 # Create your models here.
@@ -12,7 +13,7 @@ class Post(models.Model):
 	date_posted = models.DateTimeField(default=timezone.now())
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
 	url = models.SlugField(max_length=500, blank=True)
-	#url= models.SlugField(max_length=500, unique=True, blank=True)
+
 
 	def save(self, *args, **kwargs):
 		self.url= slugify(self.title)
@@ -23,39 +24,40 @@ class Post(models.Model):
 
 	def get_absolute_url(self):
 		#return reverse('article_detail', kwargs={'slug': self.slug})
-		return reverse('post-detail', kwargs={'pk_slug': self.slug})
+		#return reverse('post-detail', kwargs={'pk_slug': self.slug})
+		return reverse('post-detail', kwargs={'pk': self.pk})
 
-	#def get_absolute_url(self):
-	#	return reverse('post-detail', kwargs={'slug': self.url})
-		#
-
-	#def get_absolute_url(self):
-		#return reverse('article_detail', kwargs={'pk':self.pk})
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name='comments')
-    name = models.CharField(max_length=80)
-    email = models.EmailField()
-    body = models.TextField() 
-    created_on= models.DateTimeField(default = timezone.now())
-    active = models.BooleanField(default=False)
-    url= models.SlugField(max_length=500, blank=True)
-    #url= models.SlugField(max_length=500, unique=True, blank=True)
-    
 
-    class Meta:
-        ordering = ['created_on']
+	#The foriegn key is linked to the ID field in the Post model
+	#id = models.IntegerField(primary_key=True, blank=False)
+	post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name='comments')
+	nameid = models.ForeignKey(User,on_delete=models.CASCADE,related_name='commentsid')
+	name = models.CharField(max_length=80)
+	email = models.EmailField()
+	body = models.TextField() 
+	created_on= models.DateTimeField(default = timezone.now())
+	active = models.BooleanField(default=True)
+	url= models.SlugField(max_length=500, blank=True)
+	#id = models.AutoField(primary_key=True)
 
-    def __str__(self):
-        return 'Comment {} by {}'.format(self.body, self.name)
+	class Meta:
+		ordering = ['created_on']
 
-    def save(self, *args, **kwargs):
-        self.url= slugify(self.post)
-        #self.url= slugify(self.name)
-        super().save(*args, **kwargs)
+	def __str__(self):
+		return 'Comment {} by {}'.format(self.body, self.name)
 
-    def get_absolute_url(self):
-    	return reverse('article_detail', kwargs={'slug': self.slug})
+	def save(self, *args, **kwargs):
+		self.url= slugify(self.post)
+		super().save(*args, **kwargs)
+
+	def get_absolute_url(self):
+		return reverse('article_detail', kwargs={'slug': self.slug})
     	#return self.post.get_absolute_url()
-    	
+    	#url= models.SlugField(max_length=500, unique=True, blank=True)
+#self.url= slugify(self.name)
+
+class CommentAdmin(admin.ModelAdmin):
+	readonly_fields = ('id')
