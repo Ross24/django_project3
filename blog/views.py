@@ -115,43 +115,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         # will save the form and redirect to the success_url
         return super().form_valid(form)
-
-
-
-
-  
-#class PostCreateView(LoginRequiredMixin, CreateView):
-  #  model = Post
- #   fields = ['title', 'content']
-
-   # def form_valid(self, form):
-    #  form.instance.author = self.request.user
-     # return reverse('post-detail', args=[self.object.id])
-        # will save the form and redirect to the success_url
-        #super().form_valid(form)
-        
-
-
-    #def get_success_url(self):
-
-
-
-   
-
-    #def form_valid(self, form):
-     #   form.instance.author = self.request.user
-
-      #  return redirect('post-detail', 18)
-
-        #print (form.instance.id)
-       # return redirect('post-detail', form.instance.id)
-
- 
-
-        #return super().form_valid(form)
-        #return redirect('post-detail', Post.id)
-        #return render(request, 'blog/about.html')
-        
     
 
 
@@ -170,15 +133,11 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+    def get_success_url(self):
+        return reverse('post-detail', args=[self.object.pk])
+        #return redirect('post-detail', 18)
 
 
-
-#def DeleteCommentView(request, message_id):
- #   comment = get_object_or_404(comments.get_model(), pk=message_id,
-  #          site__pk=settings.SITE_ID)
-   # if comment.user == request.user:
-    #    comment.is_removed = True
-     #   comment.save()
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
