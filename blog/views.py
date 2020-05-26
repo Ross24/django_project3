@@ -107,16 +107,16 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
 
-    def get_success_url(self):
-        return reverse('post-detail', args=[self.object.pk])
+   # def get_success_url(self):
+    #  return reverse('post-detail', args=[self.object.pk])
         #return redirect('post-detail', 18)
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+
         # will save the form and redirect to the success_url
         return super().form_valid(form)
     
-
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -133,8 +133,8 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
-    def get_success_url(self):
-        return reverse('post-detail', args=[self.object.pk])
+   # def get_success_url(self):
+    #  return reverse('post-detail', args=[self.object.pk])
         #return redirect('post-detail', 18)
 
 
@@ -156,15 +156,17 @@ def about(request):
     return render(request, 'blog/about.html')
 
 def delete_own_comment(request, pk):
-
+  comment = get_object_or_404(Comment, id=pk)
+  comment.delete()
+  return redirect('post-detail', comment.post.id)
+  
   #template_name = 'post_detail.html'
 
-  comment = get_object_or_404(Comment, id=pk)
-  
+
   #comments = Comment.objects.filter(post=post.id ,active=True)
   #comment_form=CommentForm()
   #post = Post.objects.filter(id=8).first()
-  comment.delete()
+
 
   #return reverse('post-detail', comment.post.id)
 
@@ -174,7 +176,7 @@ def delete_own_comment(request, pk):
   #return reverse('post-detail', kwargs={'pk_slug':comment.post.id})
 
 
-  return redirect('post-detail', comment.post.id)
+  
 
   #return render(request, 'blog/home.html')
 
