@@ -22,8 +22,11 @@ class Post(models.Model):
 	def __str__(self):
 		return self.title 
 
-	def get_queryset(self, *args, **kwargs):
-		return super().get_queryset(*args, **kwargs).filter()
+	def get_absolute_url(self):
+		return reverse('post-detail', kwargs={'pk': self.pk})
+
+	#def get_queryset(self, *args, **kwargs):
+	#	return super().get_queryset(*args, **kwargs).filter()
 #author=self.request.user
 	#def get_absolute_url(self):
 	#	return reverse('post-detail', kwargs={'pk': self.pk})

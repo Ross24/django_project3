@@ -11,6 +11,19 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+
+
+if os.name == 'nt':
+    import platform
+    OSGEO4W = r"C:\OSGeo4W"
+    if '64' in platform.architecture()[0]:
+        OSGEO4W += "64"
+    assert os.path.isdir(OSGEO4W), "Directory does not exist: " + OSGEO4W
+    os.environ['OSGEO4W_ROOT'] = OSGEO4W
+    os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
+    os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
+    os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
+    GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal300.dll'
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,9 +39,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
+
 #DEBUG = (os.environ.get('DEBUG_VALUE')=='True')
 
-ALLOWED_HOSTS = ['rossdjangoawesomeapp.herokuapp.com']
+ALLOWED_HOSTS = ['rossdjangoawesomeapp.herokuapp.com', 'localhost', '127.0.0.1', 'localhost:8000']
 
 
 # Application definition
@@ -49,6 +64,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'django_comments',
+    'shops',
+    'django.contrib.gis'
 ]
 
 SITE_ID = 1
@@ -88,16 +105,33 @@ WSGI_APPLICATION = 'django_project3.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+#DATABASES = {
+ #   'default': {
+  #      'ENGINE': 'django.db.backends.sqlite3',
+   #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
+#}
+
+
+
 DATABASES = {
+    #'default': {
+   #     'ENGINE': 'django.db.backends.sqlite3',
+     #   'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#},
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'Cobra488016',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
+
+    
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -113,6 +147,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+
+
+
+
+
+
+# Password validation
+# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
+
 
 
 # Internationalization
