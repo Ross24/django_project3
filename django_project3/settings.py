@@ -45,6 +45,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['rossdjangoawesomeapp.herokuapp.com', 'localhost', '127.0.0.1', 'localhost:8000']
 
+#ALLOWED_HOSTS = ['*']
 
 # Application definition
 
