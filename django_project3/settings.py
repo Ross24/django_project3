@@ -126,7 +126,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'Cobra488016',
-        'HOST': 'localhost',
+        'HOST': 'https://rossdjangoapp.herokuapp.com/',
         'PORT': '5432'
     }
 
