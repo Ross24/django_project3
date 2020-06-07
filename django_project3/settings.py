@@ -13,17 +13,17 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 
-if os.name == 'nt':
-    import platform
-    OSGEO4W = r"C:\OSGeo4W"
-    if '64' in platform.architecture()[0]:
-        OSGEO4W += "64"
-    assert os.path.isdir(OSGEO4W), "Directory does not exist: " + OSGEO4W
-    os.environ['OSGEO4W_ROOT'] = OSGEO4W
-    os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
-    os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
-    os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
-    GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal300.dll'
+#if os.name == 'nt':
+ #   import platform
+  #  OSGEO4W = r"C:\OSGeo4W"
+   # if '64' in platform.architecture()[0]:
+    #    OSGEO4W += "64"
+    #assert os.path.isdir(OSGEO4W), "Directory does not exist: " + OSGEO4W
+    #os.environ['OSGEO4W_ROOT'] = OSGEO4W
+    #os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
+    #os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
+    #os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
+    #GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal300.dll'
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -114,15 +114,15 @@ WSGI_APPLICATION = 'django_project3.wsgi.application'
 #}
 
 
-import dj_database_url
+#import dj_database_url
 #DATABASES = { 'default': dj_database_url.config(
  #   default = 'postgis://tmlvmvfevgvgpy:75115f9ac5577c6cb27280e409c5a2f94b99e37fdbd246cb992d78d29ddecd32@ec2-34-194-198-176.compute-1.amazonaws.com:5432/d9ctat07r8q6pk?postgis_extension=true&search_schema_path=public,postgis'
   #      )
    # }
 
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+#import dj_database_url
+#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 #DATABASES = {'default':dj_database_url.config(default='postgis://tmlvmvfevgvgpy:75115f9ac5577c6cb27280e409c5a2f94b99e37fdbd246cb992d78d29ddecd32@ec2-34-194-198-176.compute-1.amazonaws.com:5432/d9ctat07r8q6pk?postgis_extension=true&search_schema_path=public,postgis')}
@@ -249,3 +249,14 @@ AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 django_heroku.settings(locals())
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': '*',
+        'USER': '*',
+        'PASSWORD': '*',
+        'HOST': '*',
+        'PORT': '5432',
+    },
+}
