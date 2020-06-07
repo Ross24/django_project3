@@ -115,14 +115,15 @@ WSGI_APPLICATION = 'django_project3.wsgi.application'
 
 
 import dj_database_url
-DATABASES = { 'default': dj_database_url.config(
-    default = 'postgis://tmlvmvfevgvgpy:75115f9ac5577c6cb27280e409c5a2f94b99e37fdbd246cb992d78d29ddecd32@ec2-34-194-198-176.compute-1.amazonaws.com:5432/d9ctat07r8q6pk?postgis_extension=true&search_schema_path=public,postgis'
-        )
-    }
+#DATABASES = { 'default': dj_database_url.config(
+ #   default = 'postgis://tmlvmvfevgvgpy:75115f9ac5577c6cb27280e409c5a2f94b99e37fdbd246cb992d78d29ddecd32@ec2-34-194-198-176.compute-1.amazonaws.com:5432/d9ctat07r8q6pk?postgis_extension=true&search_schema_path=public,postgis'
+  #      )
+   # }
+
+DATABASES['default'] = dj_database_url.config(default='postgis://tmlvmvfevgvgpy:75115f9ac5577c6cb27280e409c5a2f94b99e37fdbd246cb992d78d29ddecd32@ec2-34-194-198-176.compute-1.amazonaws.com:5432/d9ctat07r8q6pk?postgis_extension=true&search_schema_path=public,postgis')
 
 
-
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+#DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 
 #DATABASES = {
